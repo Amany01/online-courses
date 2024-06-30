@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,7 +65,7 @@ public class StudentController {
         }
     }
 
-    @GetMapping("/{username}")
+    @PutMapping("/{username}")
     public String updateStudent (@PathVariable String username, Model theModel) {
         Student tempStudent = studentDao.findStudentByUsername(username);
         theModel.addAttribute("student", tempStudent);
@@ -79,5 +80,11 @@ public class StudentController {
             studentDao.saveStudent(theStudent);
             return "confirmation";
         }
+    }
+
+    @DeleteMapping ("/{username}")
+    public String deleteStudent (@PathVariable String username) {
+        System.out.println(username);
+        return "confirmation";
     }
 }
