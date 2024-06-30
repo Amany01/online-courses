@@ -19,7 +19,7 @@ public class MemberServiceImpl implements MemberService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MemberServiceImpl (MemberDao memberDao, RoleDao roleDao, PasswordEncoder passwordEncoder) {
+    public MemberServiceImpl (MemberDao memberDao, PasswordEncoder passwordEncoder) {
         this.memberDao = memberDao;
         this.passwordEncoder = passwordEncoder;
     }
