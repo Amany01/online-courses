@@ -8,11 +8,13 @@ import com.amany.onlinecourses_demo.entity.Role;
 import com.amany.onlinecourses_demo.entity.Student;
 import com.amany.onlinecourses_demo.service.MemberService;
 import com.amany.onlinecourses_demo.user.WebUser;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,10 +30,12 @@ import org.springframework.web.bind.annotation.*;
 public class StudentController {
     private MemberService memberService;
     private StudentDao studentDao;
+    private HttpSession session;
     @Autowired
-    public StudentController (MemberService theMemberService, StudentDao theStudentDao) {
+    public StudentController (MemberService theMemberService, StudentDao theStudentDao, HttpSession session) {
         this.memberService = theMemberService;
         this.studentDao = theStudentDao;
+        this.session = session;
     }
     @InitBinder
     public void initBinder (WebDataBinder dataBinder) {
@@ -84,7 +88,15 @@ public class StudentController {
 
     @DeleteMapping ("/{username}")
     public String deleteStudent (@PathVariable String username) {
-        System.out.println(username);
-        return "confirmation";
+        if (memberService.findByUserName(username) == null) {
+            return "user_not_found";
+        }
+        Student theStudent = studentDao.findStudentByUsername(username);
+        studentDao.deleteStudent(theStudent);
+        // deleting member will delete from roles by cascading effect
+        Member theMember = memberService.findByUserName(username);
+        memberService.delete(theMember);
+        session.invalidate();
+        return "redirect:/";
     }
 }

@@ -26,11 +26,14 @@ public class SecurityConfig {
                         configurer
                                 .requestMatchers(HttpMethod.POST,"/students/processForm").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/students/registration").permitAll()
-                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET,"/admin/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.POST,"/admin/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT,"/admin/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.GET,"/dashboard").hasAnyRole("ADMIN", "STUDENT")
                                 .requestMatchers(HttpMethod.GET,"/students/**").hasAnyRole("ADMIN", "STUDENT")
                                 .requestMatchers(HttpMethod.POST,"/students/**").hasAnyRole("ADMIN", "STUDENT")
                                 .requestMatchers(HttpMethod.PUT,"/students/**").hasAnyRole("ADMIN", "STUDENT")
+                                .requestMatchers(HttpMethod.DELETE,"/students/**").hasAnyRole("ADMIN", "STUDENT")
                                 .requestMatchers("/access-denied").permitAll()
                                 .requestMatchers("/").permitAll())
                 .exceptionHandling(configurer ->

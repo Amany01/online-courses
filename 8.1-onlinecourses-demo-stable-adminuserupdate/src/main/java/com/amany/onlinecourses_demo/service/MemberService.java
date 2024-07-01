@@ -7,4 +7,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface MemberService {
     public Member findByUserName(String username);
     void save(WebUser webUser, String role);
+    void delete(Member theMember);
 }

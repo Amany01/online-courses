@@ -49,7 +49,7 @@
     </div>
     <div class="nav-item">
         <span class="text-primary">Update Student Profile</span>
-        <form th:action="@{admin/updateStudent}" method="GET" class="form-inline">
+        <form th:action="@{admin/updateStudent}" method="POST" class="form-inline">
         <label for="username" class="mr-sm-2">Enter Student Username:</label>
         <input type="text" class="form-control form-control-sm w-25 mr-sm-2" id="username" name="username" required>
         <button type="submit" class="btn btn-primary btn-sm">Go</button>
@@ -81,7 +81,10 @@
         </form>
     </div>
     <div class="nav-item">
-        <a class="nav-link active" aria-current="page" href="#">Delete Account</a>
+        <form method="post" th:action="@{/students/{name}(name=${username})}">
+            <input type="hidden" name="_method" value="delete">
+            <button type="submit" class="nav-link active" aria-current="page">Delete Your Account</button>
+        </form>
     </div>
 </div>
 

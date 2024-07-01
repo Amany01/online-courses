@@ -33,4 +33,9 @@ public class MemberDaoImpl implements MemberDao{
         entityManager.merge(theMember);
 
     }
+
+    @Override
+    public void delete(Member theMember) {
+        entityManager.remove(theMember);
+    }
 }

@@ -33,4 +33,10 @@ public class StudentDaoImpl implements StudentDao{
         }
         return theStudent;
     }
+
+    @Override
+    @Transactional
+    public void deleteStudent(Student theStudent) {
+        entityManager.remove(theStudent);
+    }
 }

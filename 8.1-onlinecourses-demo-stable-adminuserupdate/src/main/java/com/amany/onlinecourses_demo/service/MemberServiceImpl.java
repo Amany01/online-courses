@@ -38,4 +38,10 @@ public class MemberServiceImpl implements MemberService {
         Member tempMember = new Member(userName, encodedPassword,true,tempRole);
         memberDao.save(tempMember);
     }
+
+    @Override
+    @Transactional
+    public void delete(Member theMember) {
+        memberDao.delete(theMember);
+    }
 }
