@@ -25,12 +25,13 @@ public class SecurityConfig {
         http.authorizeHttpRequests(configurer ->
                         configurer
                                 .requestMatchers(HttpMethod.POST,"/students/processForm").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/instructors/processForm").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/students/registration").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/instructors/registration").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/admin/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST,"/admin/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.PUT,"/admin/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET,"/dashboard").hasAnyRole("ADMIN", "STUDENT")
+                                .requestMatchers(HttpMethod.GET,"/dashboard").hasAnyRole("ADMIN", "STUDENT", "INSTRUCTOR")
                                 .requestMatchers(HttpMethod.GET,"/students/**").hasAnyRole("ADMIN", "STUDENT")
                                 .requestMatchers(HttpMethod.POST,"/students/**").hasAnyRole("ADMIN", "STUDENT")
                                 .requestMatchers(HttpMethod.PUT,"/students/**").hasAnyRole("ADMIN", "STUDENT")
