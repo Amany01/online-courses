@@ -73,6 +73,14 @@
     <div class="nav-item">
         <a class="nav-link active" aria-current="page" th:href="@{/instructors/registration}">Add New Instructor</a>
     </div>
+    <div class="nav-item">
+        <span class="text-primary">Delete Instructor</span>
+        <form th:action="@{admin/deleteInstructor}" method="POST" class="form-inline">
+            <label for="username" class="mr-sm-2">Enter Instructor Username:</label>
+            <input type="text" class="form-control form-control-sm w-25 mr-sm-2"  name="username" required>
+            <button type="submit" class="btn btn-primary btn-sm">Go</button>
+        </form>
+    </div>
 </div>
 
 <div class="container-fluid" sec:authorize="hasRole('STUDENT')">
@@ -114,7 +122,10 @@
         <a class="nav-link active" aria-current="page" href="#">Update Profile</a>
     </div>
     <div class="nav-item">
-        <a class="nav-link active" aria-current="page" href="#">Delete Account</a>
+        <form method="post" th:action="@{/instructors/{name}(name=${username})}">
+            <input type="hidden" name="_method" value="delete">
+            <button type="submit" class="btn same-color-button" style="color: #0d6efd;">Delete Your Account</button>
+        </form>
     </div>
 
 </div>

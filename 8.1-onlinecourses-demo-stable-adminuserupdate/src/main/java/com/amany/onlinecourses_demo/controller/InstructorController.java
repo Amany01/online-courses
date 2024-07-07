@@ -3,6 +3,7 @@ package com.amany.onlinecourses_demo.controller;
 import com.amany.onlinecourses_demo.dao.InstructorDao;
 import com.amany.onlinecourses_demo.dao.StudentDao;
 import com.amany.onlinecourses_demo.entity.Instructor;
+import com.amany.onlinecourses_demo.entity.Member;
 import com.amany.onlinecourses_demo.service.MemberService;
 import com.amany.onlinecourses_demo.user.WebUser;
 import jakarta.servlet.http.HttpSession;
@@ -57,6 +58,19 @@ public class InstructorController {
                 return "student-registration-form";
             }
         }
+    }
+
+    @DeleteMapping ("/{username}")
+    public String deleteInstructor (@PathVariable String username) {
+        if (memberService.findByUserName(username) == null) {
+            return "user_not_found";
+        }
+        Instructor theInstructor = instructorDao.findInstructorByUsername(username);
+        instructorDao.deleteInstructor(theInstructor);
+        Member theMember = memberService.findByUserName(username);
+        memberService.delete(theMember);
+        session.invalidate();
+        return "redirect:/";
     }
 
 

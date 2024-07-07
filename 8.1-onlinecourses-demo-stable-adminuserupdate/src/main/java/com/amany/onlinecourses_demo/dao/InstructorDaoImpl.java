@@ -36,6 +36,7 @@ public class InstructorDaoImpl implements InstructorDao{
     }
 
     @Override
+    @Transactional
     public void deleteInstructor(Instructor theInstructor) {
         entityManager.remove(theInstructor);
     }

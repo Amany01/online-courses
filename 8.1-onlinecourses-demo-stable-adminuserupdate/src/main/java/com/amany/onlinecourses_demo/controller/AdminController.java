@@ -1,6 +1,8 @@
 package com.amany.onlinecourses_demo.controller;
 
+import com.amany.onlinecourses_demo.dao.InstructorDao;
 import com.amany.onlinecourses_demo.dao.StudentDao;
+import com.amany.onlinecourses_demo.entity.Instructor;
 import com.amany.onlinecourses_demo.entity.Member;
 import com.amany.onlinecourses_demo.entity.Student;
 import com.amany.onlinecourses_demo.service.MemberService;
@@ -17,10 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     private StudentDao studentDao;
     private MemberService memberService;
+    private InstructorDao instructorDao;
     @Autowired
-    public AdminController (StudentDao theStudentDao, MemberService theMemberService) {
+    public AdminController (StudentDao theStudentDao, MemberService theMemberService, InstructorDao theInstructorDao) {
         this.studentDao = theStudentDao;
         this.memberService = theMemberService;
+        this.instructorDao = theInstructorDao;
     }
     @PostMapping("/updateStudent")
     public String updateStudentProfile(@RequestParam String username, Model theModel) {
@@ -42,6 +46,18 @@ public class AdminController {
         Student theStudent = studentDao.findStudentByUsername(username);
         studentDao.deleteStudent(theStudent);
         // deleting member will delete from roles by cascading effect
+        Member theMember = memberService.findByUserName(username);
+        memberService.delete(theMember);
+        return "confirmation";
+    }
+
+    @PostMapping("/deleteInstructor")
+    public String deleteInstructor (@RequestParam String username) {
+        if (instructorDao.findInstructorByUsername(username) == null) {
+            return "user_not_found";
+        }
+        Instructor theInstructor = instructorDao.findInstructorByUsername(username);
+        instructorDao.deleteInstructor(theInstructor);
         Member theMember = memberService.findByUserName(username);
         memberService.delete(theMember);
         return "confirmation";
