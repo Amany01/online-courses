@@ -4,6 +4,7 @@ import com.amany.onlinecourses_demo.dao.InstructorDao;
 import com.amany.onlinecourses_demo.dao.StudentDao;
 import com.amany.onlinecourses_demo.entity.Instructor;
 import com.amany.onlinecourses_demo.entity.Member;
+import com.amany.onlinecourses_demo.entity.Student;
 import com.amany.onlinecourses_demo.service.MemberService;
 import com.amany.onlinecourses_demo.user.WebUser;
 import jakarta.servlet.http.HttpSession;
@@ -91,6 +92,4 @@ public class InstructorController {
         return "confirmation";
 
     }
-
-
 }
