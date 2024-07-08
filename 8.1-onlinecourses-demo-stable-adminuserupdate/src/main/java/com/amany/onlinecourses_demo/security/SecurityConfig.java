@@ -37,6 +37,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.PUT,"/students/**").hasAnyRole("ADMIN", "STUDENT")
                                 .requestMatchers(HttpMethod.DELETE,"/students/**").hasAnyRole("ADMIN", "STUDENT")
                                 .requestMatchers(HttpMethod.DELETE,"/instructors/**").hasAnyRole("ADMIN", "INSTRUCTOR")
+                                .requestMatchers(HttpMethod.GET,"/instructors/**").hasAnyRole("ADMIN", "INSTRUCTOR")
+                                .requestMatchers(HttpMethod.POST,"/instructors/**").hasAnyRole("ADMIN", "INSTRUCTOR")
                                 .requestMatchers("/access-denied").permitAll()
                                 .requestMatchers("/").permitAll())
                 .exceptionHandling(configurer ->

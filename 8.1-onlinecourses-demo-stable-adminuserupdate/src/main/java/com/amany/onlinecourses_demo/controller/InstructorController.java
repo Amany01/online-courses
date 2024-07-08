@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -71,6 +73,23 @@ public class InstructorController {
         memberService.delete(theMember);
         session.invalidate();
         return "redirect:/";
+    }
+
+    @GetMapping("/bio")
+    public String updateBio (@AuthenticationPrincipal UserDetails userDetails, Model theModel) {
+        Instructor theInstructor = instructorDao.findInstructorByUsername(userDetails.getUsername());
+        theModel.addAttribute("instructor", theInstructor);
+        return "bio-form";
+    }
+
+    @PostMapping("/processBioForm")
+    public String processBioForm (@AuthenticationPrincipal UserDetails userDetails, @RequestParam String bio) {
+        System.out.println("processing");
+        Instructor instructor = instructorDao.findInstructorByUsername(userDetails.getUsername());
+        instructor.setBio(bio);
+        instructorDao.saveInstructor(instructor);
+        return "confirmation";
+
     }
 
 
