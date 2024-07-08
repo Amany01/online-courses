@@ -77,7 +77,7 @@ public class StudentController {
     }
 
     @PostMapping("/processUpdates")
-    public String processUpdates (@Valid @ModelAttribute("student") Student theStudent, BindingResult theBindingResult, Model theModel) {
+    public String processUpdates (@Valid @ModelAttribute("student") Student theStudent, BindingResult theBindingResult) {
         if (theBindingResult.hasErrors()) {
             return "update_student_form";
         } else {
