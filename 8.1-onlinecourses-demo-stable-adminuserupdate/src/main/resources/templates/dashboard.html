@@ -116,7 +116,12 @@
         <a class="nav-link active" aria-current="page" th:href="@{/instructors/bio}">Add/Update Biography</a>
     </div>
     <div class="nav-item">
-        <a class="nav-link active" aria-current="page" th:href="@{/}">Add Course</a>
+        <span class="text-primary">Add Course</span>
+        <form th:action="@{instructors/addCourse}" method="POST" class="form-inline">
+            <label for="username" class="mr-sm-2">Enter Course title:</label>
+            <input type="text" class="form-control form-control-sm w-25 mr-sm-2"  name="title" required>
+            <button type="submit" class="btn btn-primary btn-sm">Add</button>
+        </form>
     </div>
     <div class="nav-item">
         <a class="nav-link active" aria-current="page" href="#">Your Courses</a>

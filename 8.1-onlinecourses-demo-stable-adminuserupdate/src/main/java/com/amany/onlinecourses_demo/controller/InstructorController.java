@@ -1,5 +1,6 @@
 package com.amany.onlinecourses_demo.controller;
 import com.amany.onlinecourses_demo.dao.InstructorDao;
+import com.amany.onlinecourses_demo.entity.Course;
 import com.amany.onlinecourses_demo.entity.Instructor;
 import com.amany.onlinecourses_demo.entity.Member;
 import com.amany.onlinecourses_demo.entity.Student;
@@ -104,5 +105,14 @@ public class InstructorController {
             instructorDao.saveInstructor(theInstructor);
             return "confirmation";
         }
+    }
+
+    @PostMapping("/addCourse")
+    public String addCourse (@AuthenticationPrincipal UserDetails userDetails, @RequestParam String title) {
+        Instructor tempInstructor = instructorDao.findInstructorByUsername(userDetails.getUsername());
+        Course course = new Course(title, tempInstructor);
+        tempInstructor.add(course);
+        instructorDao.saveInstructor(tempInstructor);
+        return "confirmation";
     }
 }
