@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -38,6 +39,13 @@ public class DemoController {
         }
         theModel.addAttribute("username", user);
         return "dashboard";
+    }
+
+    @GetMapping("/courses/{courseId}")
+    public String viewCourse (@PathVariable int courseId, Model theModel) {
+        Course course = courseDao.findCourseById(courseId);
+        theModel.addAttribute("course", course);
+        return "course-details";
     }
 
 

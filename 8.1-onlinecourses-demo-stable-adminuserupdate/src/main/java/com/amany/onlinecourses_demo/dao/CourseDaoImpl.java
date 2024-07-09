@@ -19,4 +19,11 @@ public class CourseDaoImpl implements CourseDao{
         TypedQuery<Course> theQuery = entityManager.createQuery("FROM Course", Course.class);
         return theQuery.getResultList();
     }
+
+    @Override
+    public Course findCourseById(int id) {
+        TypedQuery<Course> theQuery = entityManager.createQuery("FROM Course WHERE id =:theData", Course.class);
+        theQuery.setParameter ("theData", id);
+        return theQuery.getSingleResult();
+    }
 }
