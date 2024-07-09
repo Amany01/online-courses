@@ -46,18 +46,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>Web Development</td>
-            <td>John Doe</td>
+
+        <tr th:each="course : ${courseList}">
+            <td th:text="${course.getTitle()}"/>
+            <td th:text="${course.getInstructor().getFirstName() + ' ' + course.getInstructor().getLastName()}" />
             <td>
                 <a  href="#" class="btn btn-info btn-sm" style="background-color: #0d6efd; color: white;">Enroll</a>
-            </td>
-        </tr>
-        <tr>
-            <td>Data Science</td>
-            <td>Jane Smith</td>
-            <td>
-                <a href="#" class="btn btn-info btn-sm" style="background-color: #0d6efd; color: white;">Enroll</a>
             </td>
         </tr>
         </tbody>
