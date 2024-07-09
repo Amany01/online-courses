@@ -3,34 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .custom-blue {
+         color: #0d6efd;
+        }
+    </style>
     <title>Course Overview</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card bg-light text-white shadow rounded overflow-hidden" style="background-image: url('course-background.jpg'); background-size: cover; background-position: center;">
-                <div class="card-header bg-primary">  <h1>{{ courseTitle }}</h1>
-                </div>
-                <div class="card-body">
-                    <p class="lead">{{ shortDescription }}</p>
-                    <div class="instructor d-flex mb-3">
-                        <div>
-                            <h4>{{ instructorName }}</h4>
-                            <p class="text-muted">{{ instructorTitle }}</p>
-                        </div>
-                    </div>
-                    <p>{{ instructorBio }}</p>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="#" class="btn btn-primary">Enroll Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container p-3 mb-2 bg-transparent text-dark rounded">
+    <h1 class="custom-blue" th:text="${course.getTitle()}" />
+    <hr>
+    <h3 th:text="'By '+${course.getInstructor().getFirstName() + ' ' + course.getInstructor().getLastName()}" />
+    <p  th:text="${course.getInstructor().getBio()}"/>
+    <a  href="#" class="btn btn-info btn-sm" style="background-color: #0d6efd; color: white;">Enroll</a>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgysOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>
