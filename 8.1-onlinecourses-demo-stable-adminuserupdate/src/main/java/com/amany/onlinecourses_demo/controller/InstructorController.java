@@ -18,6 +18,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/instructors")
 public class InstructorController {
@@ -114,5 +116,12 @@ public class InstructorController {
         tempInstructor.add(course);
         instructorDao.saveInstructor(tempInstructor);
         return "confirmation";
+    }
+
+    @GetMapping("/{username}")
+    public String findCourses (@PathVariable String username, Model theModel) {
+        Instructor tempInstructor = instructorDao.findInstructorByUsername(username);
+        theModel.addAttribute("Instructor", tempInstructor);
+        return "Instructor-courses";
     }
 }
