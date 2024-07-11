@@ -4,13 +4,16 @@ import com.amany.onlinecourses_demo.dao.CourseDao;
 import com.amany.onlinecourses_demo.entity.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -48,5 +51,16 @@ public class DemoController {
         return "course-details";
     }
 
-
+    @GetMapping("/enroll")
+    public String enrollment (@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            return "redirect:/students/registration";
+        }
+        String role = userDetails.getAuthorities().toString();
+        if (role.equals("[ROLE_STUDENT]")) {
+            return "confirmation";
+        } else {
+            return "redirect:/students/registration";
+        }
+    }
 }

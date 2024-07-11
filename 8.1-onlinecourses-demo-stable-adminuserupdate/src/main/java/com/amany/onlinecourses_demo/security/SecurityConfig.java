@@ -28,6 +28,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.POST,"/instructors/processForm").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/students/registration").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/courses/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/enroll").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/instructors/registration").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/admin/**").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST,"/admin/**").hasRole("ADMIN")
