@@ -51,9 +51,10 @@
             <td>
                 <a th:href="@{/courses/{courseId}(courseId = ${course.getId()})}" th:text="${course.getTitle()}"/>
             </td>
-            <td th:text="${course.getInstructor().getFirstName() + ' ' + course.getInstructor().getLastName()}" />
+            <td th:if="${course.getInstructor() == null}" th:text="null" />
+            <td th:unless="${course.getInstructor() == null}" th:text="${course.getInstructor().getFirstName() + ' ' + course.getInstructor().getLastName()}"/>
             <td>
-                <a  th:href="@{/enroll}" class="btn btn-info btn-sm" style="background-color: #0d6efd; color: white;">Enroll</a>
+                <a  th:href="@{/enroll/{courseId}(courseId = ${course.getId()})}" class="btn btn-info btn-sm" style="background-color: #0d6efd; color: white;">Enroll</a>
             </td>
         </tr>
 

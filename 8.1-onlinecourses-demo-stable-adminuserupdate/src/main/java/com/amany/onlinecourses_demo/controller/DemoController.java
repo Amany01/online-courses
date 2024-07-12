@@ -51,8 +51,8 @@ public class DemoController {
         return "course-details";
     }
 
-    @GetMapping("/enroll")
-    public String enrollment (@AuthenticationPrincipal UserDetails userDetails) {
+    @GetMapping("/enroll/{courseId}")
+    public String enrollment (@AuthenticationPrincipal UserDetails userDetails,@PathVariable int courseId) {
         if (userDetails == null) {
             return "redirect:/students/registration";
         }
