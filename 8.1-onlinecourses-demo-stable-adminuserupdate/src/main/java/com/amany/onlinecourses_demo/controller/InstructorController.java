@@ -1,4 +1,5 @@
 package com.amany.onlinecourses_demo.controller;
+import com.amany.onlinecourses_demo.dao.CourseDao;
 import com.amany.onlinecourses_demo.dao.InstructorDao;
 import com.amany.onlinecourses_demo.entity.Course;
 import com.amany.onlinecourses_demo.entity.Instructor;
@@ -26,11 +27,13 @@ public class InstructorController {
     private MemberService memberService;
     private InstructorDao instructorDao;
     private HttpSession session;
+    private CourseDao courseDao;
     @Autowired
-    public InstructorController(MemberService memberService, InstructorDao instructorDao, HttpSession session) {
+    public InstructorController(MemberService memberService, InstructorDao instructorDao, HttpSession session, CourseDao courseDao) {
         this.memberService = memberService;
         this.instructorDao = instructorDao;
         this.session = session;
+        this.courseDao = courseDao;
     }
 
     @InitBinder
@@ -75,6 +78,13 @@ public class InstructorController {
         memberService.delete(theMember);
         session.invalidate();
         return "redirect:/";
+    }
+
+    @DeleteMapping("/id/{courseId}")
+    public String deleteCourse (@PathVariable int courseId) {
+        Course tempCourse = courseDao.findCourseById(courseId);
+        courseDao.deleteCourse(tempCourse);
+        return "confirmation";
     }
 
     @GetMapping("/bio")
