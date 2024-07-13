@@ -103,7 +103,7 @@
         </form>
     </div>
     <div class="nav-item">
-        <form  action="#">
+        <form  th:action="@{/students/{name}(name=${username})}" method="GET">
             <button type="submit" class="btn same-color-button" style="color: #0d6efd;">Your Courses</button>
         </form>
     </div>

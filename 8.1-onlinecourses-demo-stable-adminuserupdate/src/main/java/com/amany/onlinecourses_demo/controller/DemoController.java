@@ -1,7 +1,9 @@
 package com.amany.onlinecourses_demo.controller;
 
 import com.amany.onlinecourses_demo.dao.CourseDao;
+import com.amany.onlinecourses_demo.dao.StudentDao;
 import com.amany.onlinecourses_demo.entity.Course;
+import com.amany.onlinecourses_demo.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,10 +20,13 @@ import java.util.List;
 
 @Controller
 public class DemoController {
+    private StudentDao studentDao;
     private CourseDao courseDao;
     @Autowired
-    public DemoController (CourseDao courseDao) {
+    public DemoController (CourseDao courseDao, StudentDao studentDao) {
+
         this.courseDao = courseDao;
+        this.studentDao = studentDao;
     }
     @Value("${developer.name}")
     private String developer;
@@ -58,6 +63,10 @@ public class DemoController {
         }
         String role = userDetails.getAuthorities().toString();
         if (role.equals("[ROLE_STUDENT]")) {
+            Student tempStudent = studentDao.findStudentByUsername(userDetails.getUsername());
+            Course tempCourse = courseDao.findCourseById(courseId);
+            tempStudent.addCourse(tempCourse);
+            studentDao.saveStudent(tempStudent);
             return "confirmation";
         } else {
             return "redirect:/students/registration";

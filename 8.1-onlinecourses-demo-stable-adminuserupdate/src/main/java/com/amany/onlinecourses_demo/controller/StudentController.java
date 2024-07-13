@@ -3,6 +3,7 @@ package com.amany.onlinecourses_demo.controller;
 import com.amany.onlinecourses_demo.dao.MemberDao;
 import com.amany.onlinecourses_demo.dao.RoleDaoImpl;
 import com.amany.onlinecourses_demo.dao.StudentDao;
+import com.amany.onlinecourses_demo.entity.Course;
 import com.amany.onlinecourses_demo.entity.Member;
 import com.amany.onlinecourses_demo.entity.Role;
 import com.amany.onlinecourses_demo.entity.Student;
@@ -24,6 +25,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/students")
@@ -99,4 +102,17 @@ public class StudentController {
         session.invalidate();
         return "redirect:/";
     }
+
+    @GetMapping("/{username}")
+    public String studentCourses (@PathVariable String username, Model theModel) {
+        Student tempStudent = studentDao.findStudentByUsername(username);
+        List<Course> courses = tempStudent.getCourses();
+        for (Course tempcourse : courses) {
+            System.out.println(tempcourse.getTitle());
+        }
+        theModel.addAttribute("courses", courses);
+        return "student-courses";
+    }
+
+    // add endpoint to remove course from student courses
 }
