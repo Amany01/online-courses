@@ -65,6 +65,11 @@ public class DemoController {
         if (role.equals("[ROLE_STUDENT]")) {
             Student tempStudent = studentDao.findStudentByUsername(userDetails.getUsername());
             Course tempCourse = courseDao.findCourseById(courseId);
+            // if course already exist in students course list don't add it again
+            List<Course> tempStudentCourses = tempStudent.getCourses();
+            if (tempStudentCourses.contains(tempCourse)) {
+                return "confirmation";
+            }
             tempStudent.addCourse(tempCourse);
             studentDao.saveStudent(tempStudent);
             return "confirmation";

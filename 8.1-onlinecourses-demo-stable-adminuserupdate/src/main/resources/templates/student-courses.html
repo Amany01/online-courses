@@ -17,6 +17,10 @@
     <hr>
     <ul th:each="course : ${courses}">
         <li th:text="${course.getTitle()}"></li>
+        <form method="post" th:action="@{/students/courses/{courseId}(courseId=${course.getId()})}">
+            <input type="hidden" name="_method" value="delete">
+            <button type="submit" class="btn same-color-button" style="color: #0d6efd;">Remove</button>
+        </form>
     </ul>
 </div>
 </body>

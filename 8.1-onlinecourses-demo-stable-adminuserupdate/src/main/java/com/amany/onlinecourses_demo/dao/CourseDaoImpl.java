@@ -52,4 +52,10 @@ public class CourseDaoImpl implements CourseDao{
         }
         return course;
     }
+
+    @Override
+    @Transactional
+    public void saveCourse(Course course) {
+        entityManager.merge(course);
+    }
 }

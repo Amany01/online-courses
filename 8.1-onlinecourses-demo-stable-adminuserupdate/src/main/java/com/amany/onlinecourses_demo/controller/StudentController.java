@@ -1,5 +1,6 @@
 package com.amany.onlinecourses_demo.controller;
 
+import com.amany.onlinecourses_demo.dao.CourseDao;
 import com.amany.onlinecourses_demo.dao.MemberDao;
 import com.amany.onlinecourses_demo.dao.RoleDaoImpl;
 import com.amany.onlinecourses_demo.dao.StudentDao;
@@ -34,11 +35,13 @@ public class StudentController {
     private MemberService memberService;
     private StudentDao studentDao;
     private HttpSession session;
+    private CourseDao courseDao;
     @Autowired
-    public StudentController (MemberService theMemberService, StudentDao theStudentDao, HttpSession session) {
+    public StudentController (MemberService theMemberService, StudentDao theStudentDao, HttpSession session, CourseDao courseDao) {
         this.memberService = theMemberService;
         this.studentDao = theStudentDao;
         this.session = session;
+        this.courseDao = courseDao;
     }
     @InitBinder
     public void initBinder (WebDataBinder dataBinder) {
@@ -107,12 +110,17 @@ public class StudentController {
     public String studentCourses (@PathVariable String username, Model theModel) {
         Student tempStudent = studentDao.findStudentByUsername(username);
         List<Course> courses = tempStudent.getCourses();
-        for (Course tempcourse : courses) {
-            System.out.println(tempcourse.getTitle());
-        }
         theModel.addAttribute("courses", courses);
         return "student-courses";
     }
 
     // add endpoint to remove course from student courses
+    @DeleteMapping("courses/{courseId}")
+    public String removeCourse (@PathVariable int courseId, @AuthenticationPrincipal UserDetails userDetails) {
+        Student tempStudent = studentDao.findStudentByUsername(userDetails.getUsername());
+        Course course = courseDao.findCourseById(courseId);
+        tempStudent.getCourses().remove(course);
+        studentDao.saveStudent(tempStudent);
+        return "confirmation";
+    }
 }

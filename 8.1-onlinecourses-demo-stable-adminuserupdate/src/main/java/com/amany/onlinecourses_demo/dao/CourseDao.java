@@ -9,4 +9,6 @@ public interface CourseDao {
     Course findCourseById (int id);
     void deleteCourse(Course course);
     Course findCourseByTitle (String title);
+
+    void saveCourse (Course course);
 }
