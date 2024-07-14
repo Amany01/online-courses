@@ -4,10 +4,7 @@ import com.amany.onlinecourses_demo.dao.CourseDao;
 import com.amany.onlinecourses_demo.dao.MemberDao;
 import com.amany.onlinecourses_demo.dao.RoleDaoImpl;
 import com.amany.onlinecourses_demo.dao.StudentDao;
-import com.amany.onlinecourses_demo.entity.Course;
-import com.amany.onlinecourses_demo.entity.Member;
-import com.amany.onlinecourses_demo.entity.Role;
-import com.amany.onlinecourses_demo.entity.Student;
+import com.amany.onlinecourses_demo.entity.*;
 import com.amany.onlinecourses_demo.service.MemberService;
 import com.amany.onlinecourses_demo.user.WebUser;
 import jakarta.servlet.http.HttpSession;
@@ -121,6 +118,18 @@ public class StudentController {
         Course course = courseDao.findCourseById(courseId);
         tempStudent.getCourses().remove(course);
         studentDao.saveStudent(tempStudent);
+        return "confirmation";
+    }
+
+    @PostMapping("/addReview")
+    public String addReview (@RequestParam("review") String review, @RequestParam("courseId") int courseId) {
+        if (review.length() > 256) {
+            return "access-denied";
+        }
+        Review review1 = new Review(review);
+        Course course = courseDao.findCourseById(courseId);
+        course.add(review1);
+        courseDao.saveCourse(course);
         return "confirmation";
     }
 }

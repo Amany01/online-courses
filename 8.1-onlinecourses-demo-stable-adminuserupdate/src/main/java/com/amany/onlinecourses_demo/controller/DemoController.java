@@ -3,6 +3,7 @@ package com.amany.onlinecourses_demo.controller;
 import com.amany.onlinecourses_demo.dao.CourseDao;
 import com.amany.onlinecourses_demo.dao.StudentDao;
 import com.amany.onlinecourses_demo.entity.Course;
+import com.amany.onlinecourses_demo.entity.Review;
 import com.amany.onlinecourses_demo.entity.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

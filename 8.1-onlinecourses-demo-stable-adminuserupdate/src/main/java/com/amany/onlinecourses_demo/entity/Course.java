@@ -27,6 +27,10 @@ public class Course {
                inverseJoinColumns=@JoinColumn (name="student_id"))
     private List<Student> students;
 
+    @OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @JoinColumn(name="course_id")
+    private List<Review>  reviews;
+
     public Course () {}
 
     public Course(String title, Instructor instructor) {
@@ -40,6 +44,22 @@ public class Course {
             students = new ArrayList<>();
         }
         students.add(student);
+    }
+
+    //create convenience method for adding reviews
+    public void add(Review tempReview) {
+        if (reviews == null) {
+            reviews = new ArrayList< > ( );
+        }
+        reviews.add(tempReview);
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public List<Student> getStudents() {
