@@ -2,6 +2,7 @@ package com.amany.onlinecourses_demo.controller;
 
 import com.amany.onlinecourses_demo.dao.CourseDao;
 import com.amany.onlinecourses_demo.dao.InstructorDao;
+import com.amany.onlinecourses_demo.dao.ReviewDao;
 import com.amany.onlinecourses_demo.dao.StudentDao;
 import com.amany.onlinecourses_demo.entity.Course;
 import com.amany.onlinecourses_demo.entity.Instructor;
@@ -23,12 +24,14 @@ public class AdminController {
     private MemberService memberService;
     private InstructorDao instructorDao;
     private CourseDao courseDao;
+    private ReviewDao reviewDao;
     @Autowired
-    public AdminController (StudentDao theStudentDao, MemberService theMemberService, InstructorDao theInstructorDao, CourseDao theCourseDao) {
+    public AdminController (ReviewDao theReviewDao, StudentDao theStudentDao, MemberService theMemberService, InstructorDao theInstructorDao, CourseDao theCourseDao) {
         this.studentDao = theStudentDao;
         this.memberService = theMemberService;
         this.instructorDao = theInstructorDao;
         this.courseDao = theCourseDao;
+        this.reviewDao = theReviewDao;
     }
     @PostMapping("/updateStudent")
     public String updateStudentProfile(@RequestParam String username, Model theModel) {
@@ -74,6 +77,13 @@ public class AdminController {
         }
         Course tempCourse = courseDao.findCourseByTitle(title);
         courseDao.deleteCourse(tempCourse);
+        return "confirmation";
+    }
+
+    @GetMapping("/deleteReview/{reviewId}")
+    public String deleteReview (@PathVariable int reviewId) {
+        System.out.println(reviewId);
+        reviewDao.deleteReviewById(reviewId);
         return "confirmation";
     }
 }

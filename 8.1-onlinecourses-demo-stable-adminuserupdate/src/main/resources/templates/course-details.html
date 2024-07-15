@@ -40,7 +40,10 @@
     <hr>
     <div class="container-fluid">
         <h6 class="custom-blue">All Reviews</h6>
-        <p th:each="tempReview : ${course.getReviews()}"  th:text="'- ' + ${tempReview.getComment()}"/>
+        <div th:each="tempReview : ${course.getReviews()}">
+        <p   th:text="'- ' + ${tempReview.getComment()}"/>
+            <a th:href="@{/admin/deleteReview/{reviewId} (reviewId = ${tempReview.getId()})}" sec:authorize="hasRole('ADMIN')"> Delete Review</a>
+        </div>
     </div>
 </div>
 <script>
