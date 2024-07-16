@@ -1,3 +1,10 @@
+use `onlinecourses`;
+
+--
+-- Table structure for table `review`
+--
+
+
 CREATE TABLE `review` (
   `id` int NOT NULL AUTO_INCREMENT,
   `comment` varchar(256) DEFAULT NULL,

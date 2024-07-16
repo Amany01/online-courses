@@ -1,3 +1,10 @@
+
+use `onlinecourses`;
+
+--
+-- Table structure for join table `course_student`
+--
+
 CREATE TABLE `course_student` (
   `course_id` int NOT NULL,
   `student_id` int NOT NULL,

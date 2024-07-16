@@ -1,3 +1,10 @@
+
+use `onlinecourses`;
+
+--
+-- Table structure for table `students`
+--
+
 CREATE TABLE `students` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_name` varchar(45) NOT NULL,

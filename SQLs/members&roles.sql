@@ -38,6 +38,7 @@ VALUES
 -- Inserting data for table `members`
 --
 
+
 INSERT INTO `members`
 VALUES
 ('1','admin','{bcrypt}$2a$10$0cUWqcnzOGwn3PHWTd05BupdS9UMAu8oQw2wdivkXL9VzvqzQKBsa',1,'1');
