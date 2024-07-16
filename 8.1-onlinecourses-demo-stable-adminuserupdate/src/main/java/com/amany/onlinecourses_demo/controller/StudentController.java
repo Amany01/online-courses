@@ -122,13 +122,13 @@ public class StudentController {
     }
 
     @PostMapping("/addReview")
-    public String addReview (@RequestParam("review") String review, @RequestParam("courseId") int courseId) {
-        if (review.length() > 256) {
-            return "access-denied";
-        }
-        Review review1 = new Review(review);
+    public String addReview (@Valid @ModelAttribute("review") Review theReview, BindingResult theBindingResult, Model theModel, @RequestParam("courseId") int courseId) {
         Course course = courseDao.findCourseById(courseId);
-        course.add(review1);
+        theModel.addAttribute("course", course);
+        if (theBindingResult.hasErrors()) {
+            return "course-details";
+        }
+        course.add(theReview);
         courseDao.saveCourse(course);
         return "confirmation";
     }

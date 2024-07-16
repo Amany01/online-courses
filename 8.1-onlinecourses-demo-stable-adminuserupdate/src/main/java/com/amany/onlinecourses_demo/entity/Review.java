@@ -1,6 +1,7 @@
 package com.amany.onlinecourses_demo.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "review")
@@ -11,6 +12,7 @@ public class Review {
     @Column(name = "id")
     private int id;
     @Column(name = "comment")
+    @NotBlank
     private String comment;
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                CascadeType.DETACH, CascadeType.REFRESH})

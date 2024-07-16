@@ -25,11 +25,11 @@
     <div class="container-fluid" sec:authorize="hasRole('STUDENT')">
         <hr>
         <h6 class="custom-blue">Add Review</h6>
-        <form th:action="@{/students/addReview}"  method="POST">
+        <form th:action="@{/students/addReview}"  method="POST" th:object="${review}">
             <input type="hidden" name="courseId" th:value="${course.getId()}">
             <div class="form-group">
                 <label>Tell us what you think (256 characters max):</label>
-                <textarea name="review" class="form-control"  rows="5" maxlength="256" onkeyup="countChars(this)"></textarea>
+                <textarea th:field="*{comment}" class="form-control"  rows="5" maxlength="256" onkeyup="countChars(this)"></textarea>
                 <div id="char-count" class="text-end mt-1">
                     <span id="char-number">0</span> Characters Remaining
                 </div>

@@ -1,10 +1,7 @@
 package com.amany.onlinecourses_demo.controller;
 import com.amany.onlinecourses_demo.dao.CourseDao;
 import com.amany.onlinecourses_demo.dao.InstructorDao;
-import com.amany.onlinecourses_demo.entity.Course;
-import com.amany.onlinecourses_demo.entity.Instructor;
-import com.amany.onlinecourses_demo.entity.Member;
-import com.amany.onlinecourses_demo.entity.Student;
+import com.amany.onlinecourses_demo.entity.*;
 import com.amany.onlinecourses_demo.service.MemberService;
 import com.amany.onlinecourses_demo.user.WebUser;
 import jakarta.servlet.http.HttpSession;
@@ -95,10 +92,11 @@ public class InstructorController {
     }
 
     @PostMapping("/processBioForm")
-    public String processBioForm (@AuthenticationPrincipal UserDetails userDetails, @RequestParam String bio) {
-        Instructor instructor = instructorDao.findInstructorByUsername(userDetails.getUsername());
-        instructor.setBio(bio);
-        instructorDao.saveInstructor(instructor);
+    public String processBioForm ( @Valid @ModelAttribute("instructor") Instructor theInstructor, BindingResult theBindingResult) {
+        if(theBindingResult.hasErrors()) {
+            return "bio-form";
+        }
+        instructorDao.saveInstructor(theInstructor);
         return "confirmation";
     }
 

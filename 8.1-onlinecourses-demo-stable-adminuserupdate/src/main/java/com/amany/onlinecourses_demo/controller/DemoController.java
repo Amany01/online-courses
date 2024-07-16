@@ -54,6 +54,9 @@ public class DemoController {
     public String viewCourse (@PathVariable int courseId, Model theModel) {
         Course course = courseDao.findCourseById(courseId);
         theModel.addAttribute("course", course);
+
+        Review review = new Review();
+        theModel.addAttribute("review", review);
         return "course-details";
     }
 

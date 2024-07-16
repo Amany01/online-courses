@@ -10,9 +10,14 @@
 <div class="container mt-5">
     <h1>Write Your Bio</h1>
     <form th:action="@{/instructors/processBioForm}" th:object="${instructor}" method="POST">
+        <input type="hidden" th:field="*{userName}">
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{firstName}">
+        <input type="hidden" th:field="*{lastName}">
+        <input type="hidden" th:field="*{email}">
         <div class="form-group">
             <label for="bio">Tell us about yourself (256 characters max):</label>
-            <textarea name="bio" th:field="*{bio}" class="form-control" id="bio" rows="5" maxlength="256" onkeyup="countChars(this)"></textarea>
+            <textarea  th:field="*{bio}" class="form-control" id="bio" rows="5" maxlength="256" onkeyup="countChars(this)"></textarea>
             <div id="char-count" class="text-end mt-1">
                 <span id="char-number">0</span> Characters Remaining
             </div>
