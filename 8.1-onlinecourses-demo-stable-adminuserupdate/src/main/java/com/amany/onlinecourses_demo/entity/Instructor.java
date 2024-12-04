@@ -31,6 +31,7 @@ public class Instructor {
     private String email;
     @Column(name = "instructor_bio")
     private String bio;
+    // instructor refers to instructor property in the course class
     @OneToMany(mappedBy = "instructor" , fetch = FetchType.LAZY,
                cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<Course> courses;

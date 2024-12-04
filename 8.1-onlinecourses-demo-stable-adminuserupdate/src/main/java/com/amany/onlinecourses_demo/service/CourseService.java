@@ -1,10 +1,10 @@
-package com.amany.onlinecourses_demo.dao;
+package com.amany.onlinecourses_demo.service;
 
 import com.amany.onlinecourses_demo.entity.Course;
 
 import java.util.List;
 
-public interface CourseDao {
+public interface CourseService {
     List<Course> findAllCourses ();
     Course findCourseById (int id);
     void deleteCourse(Course course);

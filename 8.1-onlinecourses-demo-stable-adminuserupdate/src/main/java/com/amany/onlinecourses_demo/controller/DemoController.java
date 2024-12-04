@@ -5,6 +5,8 @@ import com.amany.onlinecourses_demo.dao.StudentDao;
 import com.amany.onlinecourses_demo.entity.Course;
 import com.amany.onlinecourses_demo.entity.Review;
 import com.amany.onlinecourses_demo.entity.Student;
+import com.amany.onlinecourses_demo.service.CourseService;
+import com.amany.onlinecourses_demo.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,13 +23,13 @@ import java.util.List;
 
 @Controller
 public class DemoController {
-    private StudentDao studentDao;
-    private CourseDao courseDao;
+    private StudentService studentService;
+    private CourseService courseService;
     @Autowired
-    public DemoController (CourseDao courseDao, StudentDao studentDao) {
+    public DemoController (CourseService courseService, StudentService studentService) {
 
-        this.courseDao = courseDao;
-        this.studentDao = studentDao;
+        this.courseService = courseService;
+        this.studentService = studentService;
     }
     @Value("${developer.name}")
     private String developer;
@@ -35,7 +37,7 @@ public class DemoController {
     public String home (Model theModel) {
         theModel.addAttribute("theDate", java.time.LocalDateTime.now());
         theModel.addAttribute( "theDeveloper", developer);
-        List<Course> courses = courseDao.findAllCourses();
+        List<Course> courses = courseService.findAllCourses();
         theModel.addAttribute("courseList", courses);
         return "home";
     }
@@ -52,7 +54,7 @@ public class DemoController {
 
     @GetMapping("/courses/{courseId}")
     public String viewCourse (@PathVariable int courseId, Model theModel) {
-        Course course = courseDao.findCourseById(courseId);
+        Course course = courseService.findCourseById(courseId);
         theModel.addAttribute("course", course);
 
         Review review = new Review();
@@ -67,15 +69,15 @@ public class DemoController {
         }
         String role = userDetails.getAuthorities().toString();
         if (role.equals("[ROLE_STUDENT]")) {
-            Student tempStudent = studentDao.findStudentByUsername(userDetails.getUsername());
-            Course tempCourse = courseDao.findCourseById(courseId);
+            Student tempStudent = studentService.findStudentByUsername(userDetails.getUsername());
+            Course tempCourse = courseService.findCourseById(courseId);
             // if course already exist in students course list don't add it again
             List<Course> tempStudentCourses = tempStudent.getCourses();
             if (tempStudentCourses.contains(tempCourse)) {
                 return "confirmation";
             }
             tempStudent.addCourse(tempCourse);
-            studentDao.saveStudent(tempStudent);
+            studentService.saveStudent(tempStudent);
             return "confirmation";
         } else {
             return "redirect:/students/registration";

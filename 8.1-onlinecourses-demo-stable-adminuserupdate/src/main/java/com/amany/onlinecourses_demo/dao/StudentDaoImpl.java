@@ -16,7 +16,6 @@ public class StudentDaoImpl implements StudentDao{
         this.entityManager = theEntityManager;
     }
     @Override
-    @Transactional
     public void saveStudent(Student theStudent) {
         entityManager.merge(theStudent);
     }
@@ -35,7 +34,6 @@ public class StudentDaoImpl implements StudentDao{
     }
 
     @Override
-    @Transactional
     public void deleteStudent(Student theStudent) {
         entityManager.remove(theStudent);
     }

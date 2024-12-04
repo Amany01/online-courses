@@ -15,7 +15,6 @@ public class ReviewDaoImpl implements ReviewDao{
         this.entityManager = entityManager;
     }
     @Override
-    @Transactional
     public void deleteReviewById(int id) {
         TypedQuery<Review> theQuery = entityManager.createQuery("FROM Review WHERE id =: theData", Review.class);
         theQuery.setParameter("theData", id);

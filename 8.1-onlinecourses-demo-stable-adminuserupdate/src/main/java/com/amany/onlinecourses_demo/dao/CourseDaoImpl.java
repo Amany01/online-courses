@@ -35,7 +35,6 @@ public class CourseDaoImpl implements CourseDao{
     }
 
     @Override
-    @Transactional
     public void deleteCourse(Course course) {
         entityManager.remove(course);
     }
@@ -54,7 +53,6 @@ public class CourseDaoImpl implements CourseDao{
     }
 
     @Override
-    @Transactional
     public void saveCourse(Course course) {
         entityManager.merge(course);
     }

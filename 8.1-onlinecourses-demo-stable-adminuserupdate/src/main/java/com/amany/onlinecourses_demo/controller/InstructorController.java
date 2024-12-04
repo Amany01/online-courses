@@ -2,6 +2,8 @@ package com.amany.onlinecourses_demo.controller;
 import com.amany.onlinecourses_demo.dao.CourseDao;
 import com.amany.onlinecourses_demo.dao.InstructorDao;
 import com.amany.onlinecourses_demo.entity.*;
+import com.amany.onlinecourses_demo.service.CourseService;
+import com.amany.onlinecourses_demo.service.InstructorService;
 import com.amany.onlinecourses_demo.service.MemberService;
 import com.amany.onlinecourses_demo.user.WebUser;
 import jakarta.servlet.http.HttpSession;
@@ -22,15 +24,15 @@ import java.util.List;
 @RequestMapping("/instructors")
 public class InstructorController {
     private MemberService memberService;
-    private InstructorDao instructorDao;
+    private InstructorService instructorService;
     private HttpSession session;
-    private CourseDao courseDao;
+    private CourseService courseService;
     @Autowired
-    public InstructorController(MemberService memberService, InstructorDao instructorDao, HttpSession session, CourseDao courseDao) {
+    public InstructorController(MemberService memberService, InstructorService instructorService, HttpSession session, CourseService courseService) {
         this.memberService = memberService;
-        this.instructorDao = instructorDao;
+        this.instructorService = instructorService;
         this.session = session;
-        this.courseDao = courseDao;
+        this.courseService = courseService;
     }
 
     @InitBinder
@@ -55,7 +57,7 @@ public class InstructorController {
             if (memberService.findByUserName(userName) == null) {
                 memberService.save(theWebUser, "ROLE_INSTRUCTOR");
                 Instructor tempInstructor = new Instructor(userName, theWebUser.getFirstName(),theWebUser.getLastName(),theWebUser.getEmail(),null,null);
-                instructorDao.saveInstructor(tempInstructor);
+                instructorService.saveInstructor(tempInstructor);
                 return "confirmation";
             } else {
                 theModel.addAttribute("userexist", "this user already exists!");
@@ -69,8 +71,8 @@ public class InstructorController {
         if (memberService.findByUserName(username) == null) {
             return "user_not_found";
         }
-        Instructor theInstructor = instructorDao.findInstructorByUsername(username);
-        instructorDao.deleteInstructor(theInstructor);
+        Instructor theInstructor = instructorService.findInstructorByUsername(username);
+        instructorService.deleteInstructor(theInstructor);
         Member theMember = memberService.findByUserName(username);
         memberService.delete(theMember);
         session.invalidate();
@@ -79,14 +81,14 @@ public class InstructorController {
 
     @DeleteMapping("/id/{courseId}")
     public String deleteCourse (@PathVariable int courseId) {
-        Course tempCourse = courseDao.findCourseById(courseId);
-        courseDao.deleteCourse(tempCourse);
+        Course tempCourse = courseService.findCourseById(courseId);
+        courseService.deleteCourse(tempCourse);
         return "confirmation";
     }
 
     @GetMapping("/bio")
     public String updateBio (@AuthenticationPrincipal UserDetails userDetails, Model theModel) {
-        Instructor theInstructor = instructorDao.findInstructorByUsername(userDetails.getUsername());
+        Instructor theInstructor = instructorService.findInstructorByUsername(userDetails.getUsername());
         theModel.addAttribute("instructor", theInstructor);
         return "bio-form";
     }
@@ -96,13 +98,13 @@ public class InstructorController {
         if(theBindingResult.hasErrors()) {
             return "bio-form";
         }
-        instructorDao.saveInstructor(theInstructor);
+        instructorService.saveInstructor(theInstructor);
         return "confirmation";
     }
 
     @PutMapping("/{username}")
     public String updateInstructor (@PathVariable String username, Model theModel) {
-        Instructor tempInstructor = instructorDao.findInstructorByUsername(username);
+        Instructor tempInstructor = instructorService.findInstructorByUsername(username);
         theModel.addAttribute("instructor", tempInstructor);
         return "update-instructor-form";
     }
@@ -112,23 +114,23 @@ public class InstructorController {
         if (theBindingResult.hasErrors()) {
             return "update-instructor-form";
         } else {
-            instructorDao.saveInstructor(theInstructor);
+            instructorService.saveInstructor(theInstructor);
             return "confirmation";
         }
     }
 
     @PostMapping("/addCourse")
     public String addCourse (@AuthenticationPrincipal UserDetails userDetails, @RequestParam String title) {
-        Instructor tempInstructor = instructorDao.findInstructorByUsername(userDetails.getUsername());
+        Instructor tempInstructor = instructorService.findInstructorByUsername(userDetails.getUsername());
         Course course = new Course(title, tempInstructor);
         tempInstructor.add(course);
-        instructorDao.saveInstructor(tempInstructor);
+        instructorService.saveInstructor(tempInstructor);
         return "confirmation";
     }
 
     @GetMapping("/{username}")
     public String findCourses (@PathVariable String username, Model theModel) {
-        Instructor tempInstructor = instructorDao.findInstructorByUsername(username);
+        Instructor tempInstructor = instructorService.findInstructorByUsername(username);
         theModel.addAttribute("Instructor", tempInstructor);
         return "Instructor-courses";
     }

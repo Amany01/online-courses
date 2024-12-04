@@ -20,7 +20,6 @@ public class InstructorDaoImpl implements InstructorDao{
         this.entityManager = theEntityManager;
     }
     @Override
-    @Transactional
     public void saveInstructor(Instructor theInstructor) {
         entityManager.merge(theInstructor);
     }
@@ -39,7 +38,6 @@ public class InstructorDaoImpl implements InstructorDao{
     }
 
     @Override
-    @Transactional
     public void deleteInstructor(Instructor theInstructor) {
         List<Course> courses = theInstructor.getCourses();
         // break association of all courses for the instructor

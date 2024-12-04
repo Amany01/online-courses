@@ -5,7 +5,9 @@ import com.amany.onlinecourses_demo.dao.MemberDao;
 import com.amany.onlinecourses_demo.dao.RoleDaoImpl;
 import com.amany.onlinecourses_demo.dao.StudentDao;
 import com.amany.onlinecourses_demo.entity.*;
+import com.amany.onlinecourses_demo.service.CourseService;
 import com.amany.onlinecourses_demo.service.MemberService;
+import com.amany.onlinecourses_demo.service.StudentService;
 import com.amany.onlinecourses_demo.user.WebUser;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -30,15 +32,15 @@ import java.util.List;
 @RequestMapping("/students")
 public class StudentController {
     private MemberService memberService;
-    private StudentDao studentDao;
+    private StudentService studentService;
     private HttpSession session;
-    private CourseDao courseDao;
+    private CourseService courseService;
     @Autowired
-    public StudentController (MemberService theMemberService, StudentDao theStudentDao, HttpSession session, CourseDao courseDao) {
+    public StudentController (MemberService theMemberService, StudentService theStudentService, HttpSession session, CourseService courseService) {
         this.memberService = theMemberService;
-        this.studentDao = theStudentDao;
+        this.studentService = theStudentService;
         this.session = session;
-        this.courseDao = courseDao;
+        this.courseService = courseService;
     }
     @InitBinder
     public void initBinder (WebDataBinder dataBinder) {
@@ -63,7 +65,7 @@ public class StudentController {
             if (memberService.findByUserName(userName) == null) {
                 memberService.save(theWebUser, "ROLE_STUDENT");
                 Student tempStudent = new Student(userName, theWebUser.getFirstName(), theWebUser.getLastName(), theWebUser.getEmail());
-                studentDao.saveStudent(tempStudent);
+                studentService.saveStudent(tempStudent);
                 return "confirmation";
             } else {
                 theModel.addAttribute("userexist", "this user already exists!");
@@ -74,7 +76,7 @@ public class StudentController {
 
     @PutMapping("/{username}")
     public String updateStudent (@PathVariable String username, Model theModel) {
-        Student tempStudent = studentDao.findStudentByUsername(username);
+        Student tempStudent = studentService.findStudentByUsername(username);
         theModel.addAttribute("student", tempStudent);
         return "update_student_form";
     }
@@ -84,7 +86,7 @@ public class StudentController {
         if (theBindingResult.hasErrors()) {
             return "update_student_form";
         } else {
-            studentDao.saveStudent(theStudent);
+            studentService.saveStudent(theStudent);
             return "confirmation";
         }
     }
@@ -94,8 +96,8 @@ public class StudentController {
         if (memberService.findByUserName(username) == null) {
             return "user_not_found";
         }
-        Student theStudent = studentDao.findStudentByUsername(username);
-        studentDao.deleteStudent(theStudent);
+        Student theStudent = studentService.findStudentByUsername(username);
+        studentService.deleteStudent(theStudent);
         // deleting member will delete from roles by cascading effect
         Member theMember = memberService.findByUserName(username);
         memberService.delete(theMember);
@@ -105,7 +107,7 @@ public class StudentController {
 
     @GetMapping("/{username}")
     public String studentCourses (@PathVariable String username, Model theModel) {
-        Student tempStudent = studentDao.findStudentByUsername(username);
+        Student tempStudent = studentService.findStudentByUsername(username);
         List<Course> courses = tempStudent.getCourses();
         theModel.addAttribute("courses", courses);
         return "student-courses";
@@ -114,22 +116,22 @@ public class StudentController {
     // add endpoint to remove course from student courses
     @DeleteMapping("courses/{courseId}")
     public String removeCourse (@PathVariable int courseId, @AuthenticationPrincipal UserDetails userDetails) {
-        Student tempStudent = studentDao.findStudentByUsername(userDetails.getUsername());
-        Course course = courseDao.findCourseById(courseId);
+        Student tempStudent = studentService.findStudentByUsername(userDetails.getUsername());
+        Course course = courseService.findCourseById(courseId);
         tempStudent.getCourses().remove(course);
-        studentDao.saveStudent(tempStudent);
+        studentService.saveStudent(tempStudent);
         return "confirmation";
     }
 
     @PostMapping("/addReview")
     public String addReview (@Valid @ModelAttribute("review") Review theReview, BindingResult theBindingResult, Model theModel, @RequestParam("courseId") int courseId) {
-        Course course = courseDao.findCourseById(courseId);
+        Course course = courseService.findCourseById(courseId);
         theModel.addAttribute("course", course);
         if (theBindingResult.hasErrors()) {
             return "course-details";
         }
         course.add(theReview);
-        courseDao.saveCourse(course);
+        courseService.saveCourse(course);
         return "confirmation";
     }
 }
